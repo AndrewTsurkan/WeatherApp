@@ -1,5 +1,6 @@
-import Foundation
+import UIKit
 
-final class MainScreenPresenterImpl {
+final class MainScreenPresenterImpl: NSObject {
     
 }
+
