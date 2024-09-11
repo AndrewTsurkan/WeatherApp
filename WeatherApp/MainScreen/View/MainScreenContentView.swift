@@ -18,8 +18,10 @@ final class MainScreenContentView: UIView {
 
 //MARK: - Public -
 extension MainScreenContentView {
-    func displayData() {
-        //TODO: - networkData
+    func reloadTableView() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
     
     func setupDelegate(delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
@@ -36,7 +38,7 @@ private extension MainScreenContentView {
         addSubviews()
         makeConstraints()
         setupTableView()
-        backgroundColor = .systemBackground
+        backgroundColor = #colorLiteral(red: 0.1434547901, green: 0.4479960799, blue: 0.7350915074, alpha: 1)
     }
     
     func addSubviews() {
@@ -55,5 +57,7 @@ private extension MainScreenContentView {
     func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(MainScreenCustomCell.self, forCellReuseIdentifier: MainScreenCustomCell.identifier)
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
     }
 }

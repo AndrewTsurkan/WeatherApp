@@ -44,6 +44,7 @@ private extension MainScreenCustomCell {
         setupLocationLabel()
         setupCurrentTemperature()
         setupForecastImage()
+        backgroundColor = .clear
     }
     
     func addSubviews() {
@@ -55,13 +56,12 @@ private extension MainScreenCustomCell {
     
     func makeConstraint() {
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-        
-            forecastImage.widthAnchor.constraint(equalToConstant: 30),
-            forecastImage.heightAnchor.constraint(equalToConstant: 20)])
+            heightAnchor.constraint(equalToConstant: 60),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 2),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
     }
     
     func setupstackView() {
@@ -69,6 +69,10 @@ private extension MainScreenCustomCell {
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
         stackView.spacing = 40
+        stackView.backgroundColor = #colorLiteral(red: 0.4875565171, green: 0.658501327, blue: 0.8347119689, alpha: 1)
+        stackView.layer.cornerRadius = 16
+        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        stackView.isLayoutMarginsRelativeArrangement = true
     }
     
     func setupLocationLabel() {

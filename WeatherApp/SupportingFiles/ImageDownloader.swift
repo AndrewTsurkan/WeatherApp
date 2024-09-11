@@ -1,7 +1,6 @@
 import UIKit
 
 struct ImageDownloader {
-    
     func requestImage(urlString: String, completion: @escaping (Result<UIImage, Error>) -> ()) {
         guard let url = URL(string: urlString) else { return }
         

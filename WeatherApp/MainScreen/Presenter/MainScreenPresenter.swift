@@ -5,4 +5,5 @@ protocol MainScreenPresenter: AnyObject {
     func didSelectRow(at indexPath: IndexPath)
     func numberOfRows() -> Int
     func configureCell(_ cell: MainScreenCustomCell, forRowAt indexPath: IndexPath)
+    func getData(data: Response)
 }
