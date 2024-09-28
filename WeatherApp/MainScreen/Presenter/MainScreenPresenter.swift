@@ -6,4 +6,5 @@ protocol MainScreenPresenter: AnyObject {
     func numberOfRows() -> Int
     func configureCell(_ cell: MainScreenCustomCell, forRowAt indexPath: IndexPath)
     func getData(data: Response)
+    func getCity(city: String)
 }

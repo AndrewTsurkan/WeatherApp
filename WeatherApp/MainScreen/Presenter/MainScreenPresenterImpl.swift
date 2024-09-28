@@ -2,23 +2,34 @@ import UIKit
 
 final class MainScreenPresenterImpl: NSObject {
     weak var view: MainScreenView?
-    var interactor: MainScreenInteractor?
-    var router: MainRouter?
+    private var interactor: MainScreenInteractor?
+    private var router: MainRouter?
+    private var city: [String] = ["Санкт-Петербург", "Москва"]
     var data: [Response] = [] {
         didSet {
             view?.reload()
         }
+    }
+    
+    init(interactor: MainScreenInteractor,
+         router: MainRouter) {
+        self.interactor = interactor
+        self.router = router
+    }
+    
+    func setView(view: MainScreenViewController) {
+        self.view = view 
     }
 }
 
 //MARK: - MainScreenPresenter -
 extension MainScreenPresenterImpl: MainScreenPresenter {
     func onViewDidLoad() {
-        
+        city.forEach({interactor?.getData(city: $0 )})
     }
     
     func didSelectRow(at indexPath: IndexPath) {
-      //TODO: - routing
+        //TODO: - routing
     }
     
     func numberOfRows() -> Int {
@@ -44,5 +55,11 @@ extension MainScreenPresenterImpl: MainScreenPresenter {
     
     func getData(data: Response) {
         self.data.append(data)
+    }
+    
+    func getCity(city: String) {
+        if !self.city.contains(city) {
+            interactor?.getData(city: city)
+        }
     }
 }

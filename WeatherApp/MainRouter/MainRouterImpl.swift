@@ -2,13 +2,13 @@ import UIKit
 
 final class MainRouterImpl: MainRouter {
     static func createMainScreenModule() -> UIViewController {
-        let presenter = MainScreenPresenterImpl()
         let interactor = MainScreenInteractorImpl()
-        let mainScreenViewController = MainScreenViewController()
-        
-        mainScreenViewController.presenter = presenter
-        presenter.view = mainScreenViewController
-        presenter.interactor = interactor
+        let router = MainRouterImpl()
+        let presenter = MainScreenPresenterImpl(interactor: interactor,
+                                                router: router)
+        let mainScreenViewController = MainScreenViewController(presenter: presenter)
+ 
+        presenter.setView(view: mainScreenViewController)
         interactor.presenter = presenter
         
         return mainScreenViewController
