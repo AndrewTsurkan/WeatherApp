@@ -19,7 +19,7 @@ final class MainScreenCustomCell: UITableViewCell {
       }
       
       required init?(coder: NSCoder) {
-          fatalError("init(coder:) has not been implemented")
+          return nil
       }
     
     override func prepareForReuse() {
@@ -44,6 +44,8 @@ private extension MainScreenCustomCell {
         setupLocationLabel()
         setupCurrentTemperature()
         setupForecastImage()
+        configureSelectedBackground()
+        configureCell() 
     }
     
     func addSubviews() {
@@ -55,13 +57,20 @@ private extension MainScreenCustomCell {
     
     func makeConstraint() {
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: topAnchor),
+            heightAnchor.constraint(equalToConstant: 60),
+            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 2),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            forecastImage.rightAnchor.constraint(equalTo: currentTemperature.leftAnchor, constant: -40),
+            forecastImage.widthAnchor.constraint(equalToConstant: 40),
+            forecastImage.heightAnchor.constraint(equalToConstant: 20),
+            currentTemperature.widthAnchor.constraint(equalToConstant: 60)
+        ])
         
-            forecastImage.widthAnchor.constraint(equalToConstant: 30),
-            forecastImage.heightAnchor.constraint(equalToConstant: 20)])
+        locationLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        currentTemperature.setContentCompressionResistancePriority(.defaultLow, for: .horizontal) 
     }
     
     func setupstackView() {
@@ -69,6 +78,9 @@ private extension MainScreenCustomCell {
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
         stackView.spacing = 40
+        stackView.backgroundColor = #colorLiteral(red: 0.4875565171, green: 0.658501327, blue: 0.8347119689, alpha: 1)
+        stackView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        stackView.isLayoutMarginsRelativeArrangement = true
     }
     
     func setupLocationLabel() {
@@ -88,4 +100,15 @@ private extension MainScreenCustomCell {
         forecastImage.clipsToBounds = true
     }
     
+    func configureSelectedBackground() {
+        let selectedBackgroundView = UIView()
+        selectedBackgroundView.backgroundColor = #colorLiteral(red: 0.4875565171, green: 0.658501327, blue: 0.8347119689, alpha: 1)
+        self.selectedBackgroundView = selectedBackgroundView
+    }
+    
+    func configureCell() {
+        backgroundColor = .clear
+        layer.cornerRadius = 24
+        clipsToBounds = true
+    }
 }
