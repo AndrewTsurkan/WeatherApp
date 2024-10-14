@@ -20,6 +20,7 @@ final class MainScreenContentView: UIView {
 extension MainScreenContentView {
     func reloadTableView() {
         DispatchQueue.main.async {
+            self.tableView.layoutIfNeeded()
             self.tableView.reloadData()
         }
     }
@@ -47,7 +48,7 @@ private extension MainScreenContentView {
     
     func makeConstraints() {
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10),
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor)

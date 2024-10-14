@@ -15,11 +15,10 @@ struct Current: Codable {
     
     enum CodingKeys: String, CodingKey {
         case temp = "temp_c"
-        case condition = "condition"
+        case condition
     }
 }
 
 struct Condition: Codable {
-    var text: String?
     var icon: String? 
 }

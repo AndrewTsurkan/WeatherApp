@@ -3,18 +3,21 @@ import UIKit
 final class MainScreenPresenterImpl: NSObject {
     weak var view: MainScreenView?
     private var interactor: MainScreenInteractor?
-    private var router: MainRouter?
-    private var city: [String] = ["Санкт-Петербург", "Москва"]
-    var data: [Response] = [] {
+    private var router: MainScreenRouter?
+    private let userDefaultsKey = "WeatherData"
+    private var defaultCity: [String] = ["Санкт-Петербург", "Москва"]
+    private var data: [Response] = [] {
         didSet {
+            saveDataToUserDefaults()
             view?.reload()
         }
     }
     
     init(interactor: MainScreenInteractor,
-         router: MainRouter) {
+         router: MainScreenRouter) {
         self.interactor = interactor
         self.router = router
+        super.init()
     }
     
     func setView(view: MainScreenViewController) {
@@ -25,11 +28,12 @@ final class MainScreenPresenterImpl: NSObject {
 //MARK: - MainScreenPresenter -
 extension MainScreenPresenterImpl: MainScreenPresenter {
     func onViewDidLoad() {
-        city.forEach({interactor?.getData(city: $0 )})
+        loadDataFromUserDefaults()
     }
     
-    func didSelectRow(at indexPath: IndexPath) {
-        //TODO: - routing
+    func didSelectRow(at indexPath: IndexPath, viewController: UIViewController) {
+        guard let city = data[indexPath.row].location.name else { return }
+        router?.pushDetailViewController(city: city, viewController: viewController)
     }
     
     func numberOfRows() -> Int {
@@ -58,8 +62,40 @@ extension MainScreenPresenterImpl: MainScreenPresenter {
     }
     
     func getCity(city: String) {
-        if !self.city.contains(city) {
+        let cityExists = data.contains { $0.location.name == city }
+        if !cityExists {
             interactor?.getData(city: city)
+        }
+    }
+    
+    func deleteItem(at: IndexPath) {
+        
+        data.remove(at: at.row)
+    }
+}
+
+//MARK: - UserDefaults -
+private extension MainScreenPresenterImpl {
+     func loadDataFromUserDefaults() {
+        if let savedData = UserDefaults.standard.data(forKey: userDefaultsKey) {
+            do {
+                let decoder = JSONDecoder()
+                self.data = try decoder.decode([Response].self, from: savedData)
+            } catch {
+                print("decoding error")
+            }
+        } else {
+            defaultCity.forEach { interactor?.getData(city: $0) }
+        }
+    }
+    
+    func saveDataToUserDefaults() {
+        do {
+            let encoder = JSONEncoder()
+            let dataToSave = try encoder.encode(self.data)
+            UserDefaults.standard.set(dataToSave, forKey: userDefaultsKey)
+        } catch {
+            print("Failed to encode data for UserDefaults: \(error)")
         }
     }
 }

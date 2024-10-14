@@ -44,12 +44,25 @@ extension MainScreenViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: MainScreenCustomCell.identifier, for: indexPath)
                 as? MainScreenCustomCell else { return UITableViewCell() }
         self.presenter?.configureCell(cell, forRowAt: indexPath)
+        cell.selectionStyle = .none
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        false
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter?.didSelectRow(at: indexPath, viewController: self)
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Удалить") { [weak self] (action, view, completion) in
+  
+            if let presenter = self?.presenter {
+                presenter.deleteItem(at: indexPath)
+            }
+            completion(true)
+        }
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+
 }
 
 //MARK: - Private -
@@ -74,7 +87,7 @@ extension MainScreenViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
     
-    private func performSearch(query: String) {
+     func performSearch(query: String) {
         presenter?.getCity(city: query)
     }
 }
