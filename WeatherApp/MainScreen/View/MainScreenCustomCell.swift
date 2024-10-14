@@ -27,14 +27,14 @@ final class MainScreenCustomCell: UITableViewCell {
         currentTemperature.text = nil
         forecastImage.image = nil
     }
-}
-
-//MARK: - Public -
-extension MainScreenCustomCell {
-    func configure() {
-        
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = 16
+        layer.masksToBounds = true
     }
 }
+
 //MARK: - UI -
 private extension MainScreenCustomCell {
     func setupUI() {
@@ -65,7 +65,6 @@ private extension MainScreenCustomCell {
             
             forecastImage.rightAnchor.constraint(equalTo: currentTemperature.leftAnchor, constant: -40),
             forecastImage.widthAnchor.constraint(equalToConstant: 40),
-            forecastImage.heightAnchor.constraint(equalToConstant: 20),
             currentTemperature.widthAnchor.constraint(equalToConstant: 60)
         ])
         
@@ -81,6 +80,8 @@ private extension MainScreenCustomCell {
         stackView.backgroundColor = #colorLiteral(red: 0.4875565171, green: 0.658501327, blue: 0.8347119689, alpha: 1)
         stackView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layer.cornerRadius = 16
+        stackView.clipsToBounds = true
     }
     
     func setupLocationLabel() {
@@ -108,7 +109,6 @@ private extension MainScreenCustomCell {
     
     func configureCell() {
         backgroundColor = .clear
-        layer.cornerRadius = 24
         clipsToBounds = true
     }
 }
